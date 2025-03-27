@@ -15,21 +15,28 @@
             :key="form.name"
             :form
             :validation="v$"
-            :form-values="formState.values"
+            :form-values="formValues"
           />
 
           <button
             type="submit"
-            class="bg-blue-500 text-white py-2 px-4 rounded"
+            class="bg-blue-500 text-white py-2 px-4 rounded mr-2"
           >
             Submit
+          </button>
+          <button
+            type="reset"
+            class="bg-gray-500 text-white py-2 px-4 rounded"
+            @click="resetForm"
+          >
+            Reset
           </button>
         </form>
       </main>
 
       <aside class="col-span-3">
         <h2>Form State</h2>
-        <pre>{{ formState.values }}</pre>
+        <pre>{{ formValues }}</pre>
       </aside>
     </div>
   </section>
@@ -37,28 +44,21 @@
 
 <script setup lang="ts">
 import * as data from "@/data/forms.json"
-import { reactive, ref } from "vue"
-import type { FormGroup, FormState } from "@/types/common"
 import FormWrapper from "@/components/Common/FormGroup.vue"
 import { useFormValidation } from "@/composables/useFormValidation"
 import { createFormDTO } from "@/types/formUtils"
+import { useFormState } from "@/composables/useFormState"
+import type { FormGroup } from "@/types/common"
 
-const forms = ref(data.forms as FormGroup[])
-
-const formState = reactive<FormState>({
-  values: {},
-  errors: {},
-  touched: {},
-})
-
-const { v$, submitForm } = useFormValidation(forms.value, formState.values)
+const { forms, formValues, resetForm } = useFormState(data.forms as FormGroup[])
+const { v$, submitForm } = useFormValidation(forms.value, formValues)
 
 const onSubmit = async () => {
   const isValid = await submitForm()
 
   if (isValid) {
     // Create DTO and process form
-    const formDTO = createFormDTO(formState.values)
+    const formDTO = createFormDTO(formValues)
     console.log("Form submitted successfully", formDTO)
   } else {
     console.log("Form validation failed")
