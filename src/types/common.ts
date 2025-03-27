@@ -1,3 +1,5 @@
+import type { validatorMap } from "./validation"
+
 interface Option {
   id: number
   label: string
@@ -21,6 +23,11 @@ export interface FormItem {
   rows?: number
   inline?: boolean
   variant?: string
+  validators?: {
+    type: keyof typeof validatorMap
+    value?: number | string
+    message?: string
+  }[]
 }
 
 export interface FormGroup {
@@ -32,7 +39,7 @@ export interface FormGroup {
 export type FormValues = Record<FormItem["key"], any>
 
 export interface FormState {
-    values: Record<string, any>;
-    errors: Record<string, string[]>;
-    touched: Record<string, boolean>;
-  }
+  values: Record<string, any>
+  errors: Record<string, string[]>
+  touched: Record<string, boolean>
+}

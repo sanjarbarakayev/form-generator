@@ -11,7 +11,13 @@
           "name": "name",
           "variant": "text",
           "label": "Name",
-          "placeholder": "Enter your name"
+          "placeholder": "Enter your name",
+          "validators": [
+            {
+              "type": "minLength",
+              "value": 3
+            }
+          ]
         },
         {
           "id": 2,

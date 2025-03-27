@@ -8,6 +8,8 @@
         :name="formItem.name"
         :type="formItem.variant"
         :placeholder="formItem.placeholder"
+        :class="{ 'el-form-item is-error !m-0': fieldErrors.length }"
+        @blur="validation.$touch()"
       />
     </div>
 
@@ -97,11 +99,12 @@
 
 <script setup lang="ts">
 import type { FormItem, FormValues } from "@/types/common"
-import { ref, unref } from "vue"
+import { computed, ref, unref } from "vue"
 
 interface Props {
   formItem: FormItem
   formValues: FormValues
+  validation: Record<string, any>
 }
 const props = defineProps<Props>()
 const values = unref(props.formValues)
@@ -120,4 +123,10 @@ const onSelectOption = (formItem: FormItem) => {
     values[formItem.childKey!] = undefined
   }
 }
+
+// Compute field-specific errors
+const fieldErrors = computed(() => {
+  const fieldValidation = props.validation[props.formItem.key]
+  return fieldValidation?.$errors.map((error: any) => error.$message) || []
+})
 </script>
