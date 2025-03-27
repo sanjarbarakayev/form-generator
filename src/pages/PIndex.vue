@@ -2,24 +2,43 @@
   <section>
     <h1>Forms</h1>
 
-    <div>
-      <div v-for="form in forms" :key="form.id">
-        <h2>{{ form.label }}</h2>
-        <ElInput v-if="form.type === 'input'" v-model="values[form.key]" />
-        <ElCheckbox v-if="form.type === 'checkbox'" v-model="values[form.key]" />
-        <ElRadio v-if="form.type === 'radio'" v-model="values[form.key]" />
-        <ElDate v-if="form.type === 'date'" v-model="values[form.key]" />
-        <ElSelect v-if="form.type === 'select'" v-model="values[form.key]" />
-      </div>
+    <div class="grid grid-cols-12 gap-10">
+      <aside class="col-span-3">
+        <h2>Drag n Drop</h2>
+      </aside>
+      <main class="col-span-6">
+        <FormWrapper
+          v-for="form in forms"
+          :key="form.name"
+          :form
+          :form-values="formState.values"
+          @submit="onSubmit"
+        />
+      </main>
+      <aside class="col-span-3">
+        <h2>
+          Values
+          <pre>{{ formState.values }}</pre>
+        </h2>
+      </aside>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import * as data from "@/data/forms.json"
-import { reactive } from "vue";
+import { reactive, ref } from "vue"
+import type { FormGroup, FormState } from "@/types/common"
+import FormWrapper from "@/components/Common/FormWrapper.vue"
 
-const forms = data.forms
+const forms = ref(data.forms as FormGroup[])
 
-const values = reactive({})
+const formState = reactive<FormState>({
+  values: {},
+  errors: {},
+  touched: {},
+})
+const onSubmit = () => {
+  console.log(formState.values)
+}
 </script>
