@@ -1,0 +1,140 @@
+{
+    "forms": [
+        {
+            "id": 1,
+            "type": "input",
+            "label": "Name"
+        },
+        {
+            "id": 2,
+            "type": "input",
+            "label": "Email"
+        },
+        {
+            "id": 3,
+            "type": "checkbox",
+            "name": "Terms and Conditions",
+            "label": "Terms and Conditions",
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Terms and Conditions"
+                },
+                {
+                    "id": 2,
+                    "label": "Privacy Policy"
+                },
+                {
+                    "id": 3,
+                    "label": "Cookies"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "type": "radio",
+            "name": "Gender",
+            "label": "Gender",
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Male"
+                },
+                {
+                    "id": 2,
+                    "label": "Female"
+                },
+                {
+                    "id": 3,
+                    "label": "Other"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "date",
+            "label": "Date of Birth"
+        },
+        {
+            "id": 6,
+            "type": "select",
+            "name": "Country",
+            "label": "Country",
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Country 1"
+                },
+                {
+                    "id": 2,
+                    "label": "Country 2"
+                },
+                {
+                    "id": 3,
+                    "label": "Country 3"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "type": "select",
+            "label": "Region",
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Region 1",
+                    "options": [
+                        {
+                            "id": 1,
+                            "label": "District 1"
+                        },
+                        {
+                            "id": 2,
+                            "label": "District 2"
+                        },
+                        {
+                            "id": 3,
+                            "label": "District 3"
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "label": "Region 2",
+                    "options": [
+                        {
+                            "id": 1,
+                            "label": "District 4"
+                        },
+                        {
+                            "id": 2,
+                            "label": "District 5"
+                        },
+                        {
+                            "id": 3,
+                            "label": "District 6"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "label": "Region 3",
+                    "options": [
+                        {
+                            "id": 1,
+                            "label": "District 7"
+                        },
+                        {
+                            "id": 2,
+                            "label": "District 8"
+                        },
+                        {
+                            "id": 3,
+                            "label": "District 9"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
