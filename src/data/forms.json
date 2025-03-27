@@ -3,17 +3,19 @@
         {
             "id": 1,
             "type": "input",
+            "key": "name",
             "label": "Name"
         },
         {
             "id": 2,
             "type": "input",
+            "key": "email",
             "label": "Email"
         },
         {
             "id": 3,
             "type": "checkbox",
-            "name": "Terms and Conditions",
+            "key": "terms",
             "label": "Terms and Conditions",
             "options": [
                 {
@@ -33,7 +35,7 @@
         {
             "id": 4,
             "type": "radio",
-            "name": "Gender",
+            "key": "gender",
             "label": "Gender",
             "options": [
                 {
@@ -53,12 +55,13 @@
         {
             "id": 5,
             "type": "date",
+            "key": "date",
             "label": "Date of Birth"
         },
         {
             "id": 6,
             "type": "select",
-            "name": "Country",
+            "key": "country",
             "label": "Country",
             "options": [
                 {
@@ -78,6 +81,7 @@
         {
             "id": 7,
             "type": "select",
+            "key": "region",
             "label": "Region",
             "options": [
                 {
