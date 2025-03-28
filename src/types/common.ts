@@ -1,13 +1,13 @@
 import type { validatorMap } from "./validation"
 
 interface Option {
-  id: number
+  id: number | string
   label: string
   options?: Option[]
 }
 
 export interface FormItem {
-  id: number
+  id: number | string
   type: string
   name: string
   key: string
@@ -31,6 +31,7 @@ export interface FormItem {
 }
 
 export interface FormGroup {
+  id: number
   cols: number
   name: string
   items: FormItem[]

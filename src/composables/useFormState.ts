@@ -1,14 +1,13 @@
-import { reactive, ref } from "vue"
+import { reactive, computed } from "vue"
 import type { FormGroup, FormValues } from "@/types/common"
 
+// TODO: move to store
 export const useFormState = (initialForms: FormGroup[]) => {
-  const forms = ref(initialForms)
+  const forms = reactive(initialForms)
   const formValues = reactive<FormValues>({})
 
   const resetForm = () => {
-    Object.keys(formValues).forEach((key) => {
-      delete formValues[key]
-    })
+    Object.assign(formValues, initializeFormValues())
   }
 
   const updateFormValue = (key: string, value: any) => {
@@ -16,19 +15,19 @@ export const useFormState = (initialForms: FormGroup[]) => {
   }
 
   const initializeFormValues = () => {
-    forms.value.forEach((form) => {
+    return forms.reduce((values, form) => {
       form.items.forEach((item) => {
-        // Initialize with undefined as a default value
-        formValues[item.key] = undefined
+        values[item.key] = null // Default to null for better form handling
       })
-    })
+      return values
+    }, {} as FormValues)
   }
 
   // Initialize form values on creation
-  initializeFormValues()
+  resetForm()
 
   return {
-    forms,
+    forms: computed(() => forms),
     formValues,
     resetForm,
     updateFormValue,

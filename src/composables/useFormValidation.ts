@@ -1,9 +1,10 @@
 import { computed } from "vue"
 import useVuelidate from "@vuelidate/core"
 import type { FormGroup, FormValues } from "@/types/common"
-import { parseValidationRules } from "@/utils/validationParser"
+import { parseValidationRules } from "@/utils/validation"
 import type { ValidatedFormItem } from "@/types/validation"
 
+// TODO: apply validation logic
 export const useFormValidation = (
   forms: FormGroup[],
   formValues: FormValues

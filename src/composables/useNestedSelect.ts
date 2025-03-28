@@ -1,6 +1,7 @@
 import { ref } from "vue"
 import type { FormItem } from "@/types/common"
 
+// TODO: apply refactored nested select controller
 export const useNestedSelect = () => {
   const subOptions = ref()
 
