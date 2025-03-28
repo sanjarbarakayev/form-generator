@@ -6,7 +6,7 @@ import ElementPlus from "unplugin-element-plus/vite"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), ElementPlus()],
+  plugins: [vue(), ElementPlus({})],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -14,5 +14,8 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+  },
+  css: {
+    preprocessorOptions: {},
   },
 })
