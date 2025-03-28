@@ -1,6 +1,9 @@
 <template>
   <div class="mb-5">
+    <!-- Label -->
     <label class="block mb-2" :for="formItem.name">{{ formItem.label }}</label>
+
+    <!-- Input -->
     <div v-if="formItem.type === 'input'">
       <ElInput
         :id="formItem.name"
@@ -13,6 +16,7 @@
       />
     </div>
 
+    <!-- Textarea -->
     <ElInput
       v-if="formItem.type === 'textarea'"
       type="textarea"
@@ -23,6 +27,7 @@
       :placeholder="formItem.placeholder"
     />
 
+    <!-- Checkbox -->
     <ElCheckboxGroup
       v-if="formItem.type === 'checkbox'"
       v-model="values[formItem.key]"
@@ -36,6 +41,7 @@
       />
     </ElCheckboxGroup>
 
+    <!-- Radio -->
     <ElRadioGroup
       v-if="formItem.type === 'radio'"
       v-model="values[formItem.key]"
@@ -49,6 +55,7 @@
       />
     </ElRadioGroup>
 
+    <!-- Date -->
     <ElDatePicker
       v-if="formItem.type === 'date'"
       :id="formItem.name"
@@ -57,6 +64,7 @@
       :placeholder="formItem.placeholder"
     />
 
+    <!-- Select -->
     <div v-if="formItem.type === 'select'">
       <ElSelect
         :id="formItem.name"
@@ -73,6 +81,7 @@
         />
       </ElSelect>
 
+      <!-- Child Select -->
       <div v-if="formItem.hasChild" class="mt-2">
         <label class="block mb-2" :for="formItem.childKey">
           {{ formItem.childLabel }}
@@ -107,20 +116,33 @@ interface Props {
   validation: Record<string, any>
 }
 const props = defineProps<Props>()
+
+// Unref form values to get reactive values
 const values = unref(props.formValues)
 
+// Reactive sub options
 const subOptions = ref()
 
 const onSelectOption = (formItem: FormItem) => {
   if (formItem.options) {
+    // Get selected option id
     const selectedOptionId = values[formItem.key]
+
+    // Get selected option
     const selectedOption = formItem.options.find(
       (option) => option.id === selectedOptionId
     )
 
+    // Update selected option id in values. values - the main form values object in the parent
     values[formItem.key] = selectedOption?.id
+
+    // Update sub options
     subOptions.value = selectedOption?.options
-    values[formItem.childKey!] = undefined
+
+    // Reset child field value when child key is present and parent option is selected/updated
+    if (formItem.childKey) {
+      values[formItem.childKey] = undefined
+    }
   }
 }
 
