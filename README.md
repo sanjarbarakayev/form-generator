@@ -1,10 +1,8 @@
-# form-generator
+# Form generator
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a form generator application built with Vue 3 and Element Plus. It allows users to create and manage forms dynamically.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Created by [Sanjar Barakayev](https://github.com/sanjarbarakayev) for [Webase](https://webase.uz)
 
 ## Customize configuration
 
