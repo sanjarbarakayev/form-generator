@@ -27,6 +27,7 @@
             :validation="v$"
             :form-values="formValues"
             @on-drop="handleDrop"
+            @on-edit="handleEdit"
           />
 
           <!-- Submit and Reset Buttons -->
@@ -48,8 +49,14 @@
 
       <!-- Right Sidebar -->
       <aside class="col-span-3">
-        <h2 class="text-lg font-semibold mb-2">Form State</h2>
-        <pre>{{ formValues }}</pre>
+        <!-- Form State -->
+        <section class="mb-5">
+          <h2 class="text-lg font-semibold mb-2">Form State</h2>
+          <pre>{{ formValues }}</pre>
+        </section>
+
+        <!-- Form Item Controller -->
+        <FormItemController :item="selectedFormItem" />
       </aside>
     </div>
   </section>
@@ -61,9 +68,11 @@ import FormWrapper from "@/components/Common/FormGroup.vue"
 import { useFormValidation } from "@/composables/useFormValidation"
 import { createFormDTO } from "@/utils/form"
 import { useFormState } from "@/composables/useFormState"
-import type { FormGroup, FormItem } from "@/types/common"
-import { ref } from "vue"
+import type { FormGroup } from "@/types/common"
 import DraggableComponents from "@/components/Common/DraggableComponents.vue"
+import { useDragController } from "@/composables/useDragController"
+import FormItemController from "@/components/Common/FormItemController.vue"
+import { useFormItemController } from "@/composables/useFormItemController"
 
 // Form State
 const { forms, formValues, resetForm } = useFormState(data.forms as FormGroup[])
@@ -71,7 +80,15 @@ const { forms, formValues, resetForm } = useFormState(data.forms as FormGroup[])
 // Form Validation
 const { v$, submitForm } = useFormValidation(forms.value, formValues)
 
+// Drag and Drop controller
+const { handleDragStart, handleDragEnd, handleDrop } = useDragController(forms)
+
+// Form Item Controller
+const { selectedFormItem, handleEdit } = useFormItemController()
+
+// Form submission
 const onSubmit = async () => {
+  // Validate form
   const isValid = await submitForm()
 
   if (isValid) {
@@ -81,25 +98,5 @@ const onSubmit = async () => {
   } else {
     console.log("Form validation failed")
   }
-}
-
-const dragginEl = ref<FormItem | null>(null)
-
-// Drag and drop
-const handleDragStart = (item: FormItem) => {
-  dragginEl.value = item
-}
-
-const handleDragEnd = () => {
-  dragginEl.value = null
-}
-
-const handleDrop = (formId: number) => {
-  const form = forms.value.find((form) => form.id === formId)
-  console.log("form", form)
-  if (!form) return
-
-  form.items.push(dragginEl.value!)
-  dragginEl.value = null
 }
 </script>

@@ -9,12 +9,13 @@
       v-for="formItem in form.items"
       :key="formItem.id"
       v-bind="{ formItem, validation, formValues }"
+      @on-edit="$emit('on-edit', formItem)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { FormGroup, FormValues } from "@/types/common"
+import type { FormGroup, FormItem, FormValues } from "@/types/common"
 import FormGenerator from "@/components/Common/FormGenerator.vue"
 import { getColumnClass } from "@/utils/common"
 import { computed, ref } from "vue"
@@ -30,6 +31,7 @@ const props = defineProps<Props>()
 // Emits
 interface Emits {
   "on-drop": [formId: number]
+  "on-edit": [formItem: FormItem]
 }
 const emit = defineEmits<Emits>()
 

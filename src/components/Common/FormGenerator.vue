@@ -1,7 +1,19 @@
 <template>
   <div class="mb-5">
     <!-- Label -->
-    <label class="block mb-2" :for="formItem.name">{{ formItem.label }}</label>
+    <div class="flex items-center justify-between">
+      <label class="block mb-2" :for="formItem.name">
+        {{ formItem.label }}
+      </label>
+      <ElIcon
+        v-if="formItem.editControllerAvailable"
+        :size="20"
+        class="cursor-pointer text-gray-500 hover:text-blue-500"
+        @click="$emit('on-edit')"
+      >
+        <Edit />
+      </ElIcon>
+    </div>
 
     <!-- Input -->
     <div v-if="formItem.type === 'input'">

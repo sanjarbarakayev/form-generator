@@ -1,4 +1,4 @@
-import type { validatorMap } from "./validation"
+import type { validatorMap } from "@/utils/validation"
 
 interface Option {
   id: number | string
@@ -23,6 +23,7 @@ export interface FormItem {
   rows?: number
   inline?: boolean
   variant?: string
+  editControllerAvailable?: boolean
   validators?: {
     type: keyof typeof validatorMap
     value?: number | string

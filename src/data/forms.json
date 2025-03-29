@@ -13,6 +13,7 @@
           "variant": "text",
           "label": "Name",
           "placeholder": "Enter your name",
+          "editControllerAvailable": true,
           "validators": [
             {
               "type": "minLength",
@@ -27,7 +28,8 @@
           "variant": "email",
           "key": "email",
           "label": "Email",
-          "placeholder": "Enter your email"
+          "placeholder": "Enter your email",
+          "editControllerAvailable": true
         }
       ]
     },
@@ -43,7 +45,8 @@
           "variant": "password",
           "key": "password",
           "label": "Password",
-          "placeholder": "Enter your password"
+          "placeholder": "Enter your password",
+          "editControllerAvailable": true
         }
       ]
     },
@@ -114,7 +117,8 @@
           "name": "date",
           "key": "date",
           "label": "Date of Birth",
-          "placeholder": "Enter your date of birth"
+          "placeholder": "Enter your date of birth",
+          "editControllerAvailable": true
         }
       ]
     },
