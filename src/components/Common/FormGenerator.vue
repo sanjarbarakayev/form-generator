@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-5">
-    <!-- Label -->
+  <div>
+    <!-- Label with optional edit icon -->
     <div class="flex items-center justify-between">
       <label class="block mb-2" :for="formItem.name">
         {{ formItem.label }}
@@ -15,75 +15,37 @@
       </ElIcon>
     </div>
 
-    <!-- Input -->
-    <div v-if="formItem.type === 'input'">
-      <ElInput
-        :id="formItem.name"
-        v-model="values[formItem.key]"
-        :name="formItem.name"
-        :type="formItem.variant"
-        :placeholder="formItem.placeholder"
-        :class="{ 'el-form-item is-error !m-0': fieldErrors.length }"
-        @blur="validation.$touch()"
-      />
-    </div>
-
-    <!-- Textarea -->
-    <ElInput
-      v-if="formItem.type === 'textarea'"
-      type="textarea"
+    <!-- Dynamic form field based on type -->
+    <component
+      :is="getComponentType(formItem.type)"
+      v-if="!isComplexType(formItem.type)"
+      v-bind="getComponentProps(formItem)"
       :id="formItem.name"
-      v-model="values[formItem.key]"
       :name="formItem.name"
-      :rows="formItem.rows"
-      :placeholder="formItem.placeholder"
-    />
-
-    <!-- Checkbox -->
-    <ElCheckboxGroup
-      v-if="formItem.type === 'checkbox'"
       v-model="values[formItem.key]"
-      :name="formItem.name"
+      :class="{ 'el-form-item is-error !m-0': fieldHasErrors(formItem.key) }"
+      @blur="validation.$touch()"
     >
-      <ElCheckbox
-        v-for="option in formItem.options"
-        :key="option.id"
-        :value="option.id"
-        :label="option.label"
-      />
-    </ElCheckboxGroup>
+      <!-- Render options for select, radio, and checkbox components -->
+      <template v-if="hasOptions(formItem.type)">
+        <component
+          :is="getOptionComponent(formItem.type)"
+          v-for="option in formItem.options"
+          :key="option.id"
+          :value="option.id"
+          :label="option.label"
+        />
+      </template>
+    </component>
 
-    <!-- Radio -->
-    <ElRadioGroup
-      v-if="formItem.type === 'radio'"
-      v-model="values[formItem.key]"
-      :name="formItem.name"
-    >
-      <ElRadio
-        v-for="option in formItem.options"
-        :key="option.id"
-        :value="option.id"
-        :label="option.label"
-      />
-    </ElRadioGroup>
-
-    <!-- Date -->
-    <ElDatePicker
-      v-if="formItem.type === 'date'"
-      :id="formItem.name"
-      v-model="values[formItem.key]"
-      :name="formItem.name"
-      :placeholder="formItem.placeholder"
-    />
-
-    <!-- Select -->
+    <!-- Special handling for select with child relationship -->
     <div v-if="formItem.type === 'select'">
       <ElSelect
         :id="formItem.name"
         v-model="values[formItem.key]"
         :name="formItem.name"
-        @change="onSelectOption(formItem)"
         :placeholder="formItem.placeholder"
+        @change="onSelectOption(formItem)"
       >
         <ElOption
           v-for="option in formItem.options"
@@ -93,16 +55,15 @@
         />
       </ElSelect>
 
-      <!-- Child Select -->
+      <!-- Child Select when parent has a child relationship -->
       <div v-if="formItem.hasChild" class="mt-2">
         <label class="block mb-2" :for="formItem.childKey">
           {{ formItem.childLabel }}
         </label>
 
         <ElSelect
-          v-if="formItem.hasChild"
           v-model="values[formItem.childKey!]"
-          :name="formItem.childName!"
+          :name="formItem.childName"
           :placeholder="formItem.childPlaceholder"
           :disabled="!values[formItem.key]"
         >
@@ -115,13 +76,20 @@
         </ElSelect>
       </div>
     </div>
+
+    <!-- Display validation errors -->
+    <div v-if="fieldHasErrors(formItem.key)" class="text-red-500 text-sm mt-1">
+      {{ fieldErrors[0] }}
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { FormItem, FormValues } from "@/types/common"
+import type { FormItem, FormValues } from "@/types/form"
+import type { Option } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, ref, unref } from "vue"
 
+// Props
 interface Props {
   formItem: FormItem
   formValues: FormValues
@@ -129,36 +97,96 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+// Emits
+interface Emits {
+  (e: "on-edit"): void
+}
+defineEmits<Emits>()
+
 // Unref form values to get reactive values
 const values = unref(props.formValues)
 
-// Reactive sub options
-const subOptions = ref()
+// Reactive sub options for parent-child select relationship
+const subOptions = ref<Option[]>([])
 
+// Maps form field types to component types
+const getComponentType = (type: string): string => {
+  const componentMap: Record<string, string> = {
+    input: "ElInput",
+    textarea: "ElInput",
+    checkbox: "ElCheckboxGroup",
+    radio: "ElRadioGroup",
+    date: "ElDatePicker",
+  }
+
+  return componentMap[type] || "div"
+}
+
+// Checks if a form type has options (checkbox, radio, select)
+const hasOptions = (type: string): boolean => {
+  return ["checkbox", "radio", "select"].includes(type)
+}
+
+// Returns the appropriate option component based on the field type
+const getOptionComponent = (type: string): string => {
+  const optionMap: Record<string, string> = {
+    checkbox: "ElCheckbox",
+    radio: "ElRadio",
+    select: "ElOption",
+  }
+
+  return optionMap[type] || ""
+}
+
+// Checks if a form type requires special handling outside of dynamic components
+const isComplexType = (type: string): boolean => {
+  return ["select"].includes(type)
+}
+
+// Generates appropriate props for each component type
+const getComponentProps = (formItem: FormItem): Record<string, any> => {
+  const commonProps = {
+    placeholder: formItem.placeholder,
+  }
+
+  const typeSpecificProps: Record<string, Record<string, any>> = {
+    input: {
+      type: formItem.variant || "text",
+    },
+    textarea: {
+      type: "textarea",
+      rows: formItem.rows || 3,
+    },
+    date: {},
+  }
+
+  return { ...commonProps, ...(typeSpecificProps[formItem.type] || {}) }
+}
+
+// Handles the selection of an option in a parent select field
 const onSelectOption = (formItem: FormItem) => {
   if (formItem.options) {
-    // Get selected option id
-    const selectedOptionId = values[formItem.key]
-
     // Get selected option
     const selectedOption = formItem.options.find(
-      (option) => option.id === selectedOptionId
+      (option) => option.id === values[formItem.key]
     )
 
-    // Update selected option id in values. values - the main form values object in the parent
-    values[formItem.key] = selectedOption?.id
-
     // Update sub options
-    subOptions.value = selectedOption?.options
+    subOptions.value = selectedOption?.options || []
 
-    // Reset child field value when child key is present and parent option is selected/updated
+    // Reset child field value when parent option changes
     if (formItem.childKey) {
       values[formItem.childKey] = undefined
     }
   }
 }
 
-// Compute field-specific errors
+// Checks if a field has validation errors
+const fieldHasErrors = (key: string): boolean => {
+  return Boolean(props.validation[key]?.$errors?.length)
+}
+
+// Gets the validation errors for a specific field
 const fieldErrors = computed(() => {
   const fieldValidation = props.validation[props.formItem.key]
   return fieldValidation?.$errors.map((error: any) => error.$message) || []
