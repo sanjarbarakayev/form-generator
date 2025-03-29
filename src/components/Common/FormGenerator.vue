@@ -1,5 +1,13 @@
 <template>
+<<<<<<< Updated upstream
   <div :style="{ order: formItem.order }">
+=======
+  <div
+    :style="{ order: formItem.order, ...cardStyle }"
+    ref="card"
+    class="transition-all duration-200"
+  >
+>>>>>>> Stashed changes
     <!-- Label with optional edit icon -->
     <div
       class="flex items-center justify-between"
@@ -12,14 +20,27 @@
       >
         {{ formItem.label }}
       </label>
-      <ElIcon
-        v-if="formItem.editControllerAvailable"
-        :size="20"
-        class="cursor-pointer text-gray-500 hover:text-blue-500"
-        @click="$emit('on-edit')"
-      >
-        <Edit />
-      </ElIcon>
+
+      <div class="flex items-center gap-2">
+        <!-- Drag Icon -->
+        <ElIcon
+          :size="20"
+          class="cursor-grab text-gray-500 hover:text-blue-500"
+          @mousedown="startDrag"
+        >
+          <Rank />
+        </ElIcon>
+
+        <!-- Edit Icon -->
+        <ElIcon
+          v-if="formItem.editControllerAvailable"
+          :size="20"
+          class="cursor-pointer text-gray-500 hover:text-blue-500"
+          @click="$emit('on-edit')"
+        >
+          <Edit />
+        </ElIcon>
+      </div>
     </div>
 
     <!-- Dynamic form field based on type -->
@@ -97,6 +118,11 @@
 <script setup lang="ts">
 import type { FormItem, FormValues } from "@/types/form"
 import { useFormField } from "@/composables/useFormField"
+<<<<<<< Updated upstream
+=======
+import { onMounted, onUnmounted, reactive, ref } from "vue"
+import { computed } from "@vue/reactivity"
+>>>>>>> Stashed changes
 
 // Props
 interface Props {
@@ -109,10 +135,28 @@ const props = defineProps<Props>()
 // Emits
 interface Emits {
   (e: "on-edit"): void
+<<<<<<< Updated upstream
 }
 defineEmits<Emits>()
 
 // Use the composable to get all the form field logic
+=======
+  (
+    e: "dragging",
+    position: {
+      id: number
+      x: number
+      y: number
+      width: number
+      height: number
+    }
+  ): void
+  (e: "drag-end"): void
+}
+const emit = defineEmits<Emits>()
+
+// Composables
+>>>>>>> Stashed changes
 const {
   values,
   subOptions,
@@ -125,4 +169,108 @@ const {
   fieldHasErrors,
   fieldErrors,
 } = useFormField(props.formItem, props.formValues, props.validation)
+<<<<<<< Updated upstream
+=======
+
+const position = reactive({ x: 0, y: 0 })
+
+onMounted(() => {
+  if (card.value) {
+    position.x = card.value?.offsetLeft || 0
+    position.y = card.value?.offsetTop || 0
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener("mousemove", onDrag)
+  document.removeEventListener("mouseup", stopDrag)
+})
+
+const card = ref<HTMLElement | null>(null)
+const dragging = ref(false)
+const initialPosition = reactive({ x: 0, y: 0 })
+const dragOffset = reactive({ x: 0, y: 0 })
+const cardRect = reactive({
+  width: 0,
+  height: 0,
+  left: 0,
+  top: 0,
+})
+
+const cardStyle = computed(() => ({
+  position: dragging.value ? "fixed" : "relative",
+  zIndex: dragging.value ? 1000 : "auto",
+  top: dragging.value ? `${initialPosition.y + dragOffset.y}px` : "auto",
+  left: dragging.value ? `${initialPosition.x + dragOffset.x}px` : "auto",
+  width: dragging.value ? `${cardRect.width}px` : "auto",
+  height: dragging.value ? `${cardRect.height}px` : "auto",
+  transform: dragging.value ? "scale(1.02)" : "none",
+  boxShadow: dragging.value ? "0 4px 12px rgba(0,0,0,0.15)" : "none",
+  backgroundColor: dragging.value ? "#fff" : "transparent",
+  cursor: dragging.value ? "grabbing" : "grab",
+}))
+
+const startDrag = (event: MouseEvent) => {
+  if (!card.value) return
+
+  dragging.value = true
+  const rect = card.value.getBoundingClientRect()
+
+  // Store initial position and dimensions
+  initialPosition.x = rect.left
+  initialPosition.y = rect.top
+  cardRect.width = rect.width
+  cardRect.height = rect.height
+
+  // Calculate offset from mouse to element corner
+  dragOffset.x = event.clientX - rect.left
+  dragOffset.y = event.clientY - rect.top
+
+  document.addEventListener("mousemove", onDrag)
+  document.addEventListener("mouseup", stopDrag)
+}
+
+const onDrag = (event: MouseEvent) => {
+  console.log("onDrag", dragging.value)
+  if (!dragging.value) return
+
+  // Update drag offset
+  dragOffset.x = event.clientX - initialPosition.x - dragOffset.x
+  dragOffset.y = event.clientY - initialPosition.y - dragOffset.y
+
+  // Emit drag position to parent for collision detection
+  emit("dragging", {
+    id: props.formItem.id,
+    x: event.clientX,
+    y: event.clientY,
+    width: cardRect.width,
+    height: cardRect.height,
+  })
+}
+
+const stopDrag = () => {
+  dragging.value = false
+  document.removeEventListener("mousemove", onDrag)
+  document.removeEventListener("mouseup", stopDrag)
+  emit("drag-end")
+}
+
+onMounted(() => {
+  if (card.value) {
+    const rect = card.value.getBoundingClientRect()
+    cardRect.width = rect.width
+    cardRect.height = rect.height
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener("mousemove", onDrag)
+  document.removeEventListener("mouseup", stopDrag)
+})
+
+// Expose methods if needed
+defineExpose({
+  getRect: () => cardRect,
+})
+>>>>>>> Stashed changes
 </script>

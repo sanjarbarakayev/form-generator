@@ -28,6 +28,7 @@
             :form-values="formValues"
             @on-drop="handleDrop"
             @on-edit="handleEdit"
+            @reorder="handleReorder"
           />
 
           <!-- Submit and Reset Buttons -->
@@ -68,7 +69,7 @@ import FormWrapper from "@/components/Common/FormGroup.vue"
 import { useFormValidation } from "@/composables/useFormValidation"
 import { createFormDTO } from "@/utils/form"
 import { useFormState } from "@/composables/useFormState"
-import type { FormGroup } from "@/types/form"
+import type { FormGroup, FormItem } from "@/types/form"
 import DraggableComponents from "@/components/Common/DraggableComponents.vue"
 import { useDragController } from "@/composables/useDragController"
 import FormItemController from "@/components/Common/FormItemController.vue"
@@ -98,5 +99,15 @@ const onSubmit = async () => {
   } else {
     console.log("Form validation failed")
   }
+}
+
+const handleReorder = (newItems: FormItem[]) => {
+  // Update your form items state with the new order
+  forms.value = forms.value.map(group => {
+    if (group.id === selectedFormItem.value?.formId) {
+      return { ...group, items: newItems }
+    }
+    return group
+  })
 }
 </script>
