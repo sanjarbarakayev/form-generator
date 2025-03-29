@@ -2,8 +2,6 @@
 
 This is a form generator application built with Vue 3 and Element Plus. It allows users to create and manage forms dynamically.
 
-Created by [Sanjar Barakayev](https://github.com/sanjarbarakayev) for [Webase](https://webase.uz)
-
 ## Tech Stack
 
 - [Vue 3](https://v3.vuejs.org/)
@@ -17,7 +15,7 @@ Created by [Sanjar Barakayev](https://github.com/sanjarbarakayev) for [Webase](h
 
 ## Preview
 
-![Alt Text](https://github.com/sanjarbarakayev/form-generator/blob/master/public/form-generator.gif)
+![Preview GIF](https://github.com/sanjarbarakayev/form-generator/blob/master/public/form-generator.gif)
 
 ## Customize configuration
 
