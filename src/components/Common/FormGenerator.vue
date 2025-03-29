@@ -1,13 +1,9 @@
 <template>
-<<<<<<< Updated upstream
-  <div :style="{ order: formItem.order }">
-=======
   <div
     :style="{ order: formItem.order, ...cardStyle }"
     ref="card"
     class="transition-all duration-200"
   >
->>>>>>> Stashed changes
     <!-- Label with optional edit icon -->
     <div
       class="flex items-center justify-between"
@@ -118,11 +114,7 @@
 <script setup lang="ts">
 import type { FormItem, FormValues } from "@/types/form"
 import { useFormField } from "@/composables/useFormField"
-<<<<<<< Updated upstream
-=======
-import { onMounted, onUnmounted, reactive, ref } from "vue"
-import { computed } from "@vue/reactivity"
->>>>>>> Stashed changes
+import { onMounted, onUnmounted, reactive, ref, computed } from "vue"
 
 // Props
 interface Props {
@@ -135,12 +127,6 @@ const props = defineProps<Props>()
 // Emits
 interface Emits {
   (e: "on-edit"): void
-<<<<<<< Updated upstream
-}
-defineEmits<Emits>()
-
-// Use the composable to get all the form field logic
-=======
   (
     e: "dragging",
     position: {
@@ -156,7 +142,6 @@ defineEmits<Emits>()
 const emit = defineEmits<Emits>()
 
 // Composables
->>>>>>> Stashed changes
 const {
   values,
   subOptions,
@@ -169,8 +154,6 @@ const {
   fieldHasErrors,
   fieldErrors,
 } = useFormField(props.formItem, props.formValues, props.validation)
-<<<<<<< Updated upstream
-=======
 
 const position = reactive({ x: 0, y: 0 })
 
@@ -272,5 +255,4 @@ onUnmounted(() => {
 defineExpose({
   getRect: () => cardRect,
 })
->>>>>>> Stashed changes
 </script>
