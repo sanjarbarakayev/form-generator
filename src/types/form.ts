@@ -38,6 +38,7 @@ export interface FormItem {
   selectionLabel?: string
   variant?: string
   editControllerAvailable?: boolean
+  order?: number
   validators?: {
     type: keyof typeof validatorMap
     value?: number | string
