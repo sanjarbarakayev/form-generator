@@ -1,5 +1,5 @@
 import { reactive, computed } from "vue"
-import type { FormGroup, FormValues } from "@/types/common"
+import type { FormGroup, FormValues } from "@/types/form"
 
 // TODO: move to store
 export const useFormState = (initialForms: FormGroup[]) => {

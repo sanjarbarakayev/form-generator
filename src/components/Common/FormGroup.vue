@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormGroup, FormItem, FormValues } from "@/types/common"
+import type { FormGroup, FormItem, FormValues } from "@/types/form"
 import FormGenerator from "@/components/Common/FormGenerator.vue"
 import { getColumnClass } from "@/utils/common"
 import { computed, ref } from "vue"
@@ -36,7 +36,7 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 const containerClasses = computed(() => [
-  "transition-all duration-300 grid gap-4 relative border-2 border-dashed border-transparent rounded",
+  "transition-all duration-300 grid gap-4 relative border-2 border-dashed border-transparent rounded mb-5",
   getColumnClass(props.form.cols),
   { "!border-blue-500": isDragging.value },
 ])

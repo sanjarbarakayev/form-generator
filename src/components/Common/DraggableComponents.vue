@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { draggableFormItems } from "@/data/form"
-import type { FormItem } from "@/types/common"
+import type { FormItem } from "@/types/form"
 
 // Emits
 interface Emits {

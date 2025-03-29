@@ -1,4 +1,4 @@
-import type { FormItem } from "./common"
+import type { FormItem } from "./form"
 import type { validatorMap } from "@/utils/validation"
 
 // Extended FormItem interface to include validation rules

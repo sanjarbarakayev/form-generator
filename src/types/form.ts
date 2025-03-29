@@ -1,5 +1,14 @@
 import type { validatorMap } from "@/utils/validation"
 
+export type FormItemType =
+  | "input"
+  | "checkbox"
+  | "radio"
+  | "date"
+  | "select"
+  | "file"
+  | "textarea"
+
 interface Option {
   id: number | string
   label: string
@@ -8,7 +17,7 @@ interface Option {
 
 export interface FormItem {
   id: number | string
-  type: string
+  type: FormItemType
   name: string
   key: string
   label: string

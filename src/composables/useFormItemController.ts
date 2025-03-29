@@ -1,4 +1,4 @@
-import type { FormItem } from "@/types/common"
+import type { FormItem } from "@/types/form"
 import { ref } from "vue"
 
 export const useFormItemController = () => {

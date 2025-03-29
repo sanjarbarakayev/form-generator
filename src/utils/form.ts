@@ -1,4 +1,4 @@
-import type { FormValues } from "@/types/common"
+import type { FormValues } from "@/types/form"
 
 /**
  * Sanitize form values (remove undefined or null)

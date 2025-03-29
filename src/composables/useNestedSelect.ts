@@ -1,5 +1,5 @@
 import { ref } from "vue"
-import type { FormItem } from "@/types/common"
+import type { FormItem } from "@/types/form"
 
 // TODO: apply refactored nested select controller
 export const useNestedSelect = () => {

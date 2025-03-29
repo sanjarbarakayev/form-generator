@@ -1,4 +1,6 @@
-export const draggableFormItems = [
+import type { FormItem } from "@/types/form"
+
+export const draggableFormItems: FormItem[] = [
   {
     id: "draggableInput",
     type: "input",

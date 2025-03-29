@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormItem } from "@/types/common"
+import type { FormItem } from "@/types/form"
 import { ref, unref, watchEffect } from "vue"
 
 // Props

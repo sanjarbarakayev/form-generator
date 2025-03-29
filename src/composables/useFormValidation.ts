@@ -1,6 +1,6 @@
 import { computed } from "vue"
 import useVuelidate from "@vuelidate/core"
-import type { FormGroup, FormValues } from "@/types/common"
+import type { FormGroup, FormValues } from "@/types/form"
 import { parseValidationRules } from "@/utils/validation"
 import type { ValidatedFormItem } from "@/types/validation"
 
