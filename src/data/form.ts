@@ -8,6 +8,8 @@ export const draggableFormItems: FormItem[] = [
     key: "draggableInput",
     label: "Draggable Input",
     placeholder: "Enter your name",
+    editControllerAvailable: true,
+    order: 3,
   },
   {
     id: "draggableDate",
@@ -16,6 +18,8 @@ export const draggableFormItems: FormItem[] = [
     key: "draggableDate",
     label: "Draggable Date",
     placeholder: "Enter your birth date",
+    editControllerAvailable: true,
+    order: 2,
   },
   {
     id: "draggableSelect",
@@ -46,5 +50,7 @@ export const draggableFormItems: FormItem[] = [
     key: "draggableTextarea",
     label: "Draggable Textarea",
     placeholder: "Enter your message",
+    editControllerAvailable: true,
+    order: 1,
   },
 ]

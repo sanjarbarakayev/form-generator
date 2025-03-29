@@ -245,7 +245,9 @@
           "key": "message",
           "label": "Message",
           "rows": 4,
-          "placeholder": "Enter your message"
+          "placeholder": "Enter your message",
+          "editControllerAvailable": true,
+          "order": 1
         }
       ]
     }

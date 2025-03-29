@@ -18,8 +18,6 @@ export const useDragController = (forms: Ref<FormGroup[]>) => {
   }
 
   const handleDrop = (formId: number) => {
-    console.log("handleDrop", formId)
-
     // Find the form item
     const form = forms.value.find((form) => form.id === formId)
 
