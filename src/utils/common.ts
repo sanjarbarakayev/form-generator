@@ -1,3 +1,5 @@
+import type { FormItemType } from "@/types/form"
+
 /**
  * Converts a number of columns into a Tailwind CSS grid class
  * @param cols The number of columns (1-12)
@@ -28,4 +30,16 @@ export const getColumnClass = (cols: number) => {
   // Return the corresponding grid class for the given number of columns
   // If the number is not in the range 1-12, default to 'grid-cols-1'
   return columnClasses[cols as keyof typeof columnClasses] || "grid-cols-1"
+}
+
+/**
+ * Generates a unique ID for a form item
+ * @param type The type of the form item
+ * @returns A unique ID
+ */
+export const generateId = (type: FormItemType) => {
+  // Generate a random number between 0 and 1000000
+  const randomNumber = Math.floor(Math.random() * 1000000)
+
+  return `${type}-${randomNumber}`
 }
