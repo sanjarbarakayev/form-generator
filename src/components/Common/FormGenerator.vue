@@ -1,8 +1,15 @@
 <template>
   <div>
     <!-- Label with optional edit icon -->
-    <div class="flex items-center justify-between">
-      <label class="block mb-2" :for="formItem.name">
+    <div
+      class="flex items-center justify-between"
+      v-if="formItem.label || formItem.editControllerAvailable"
+    >
+      <label
+        class="block mb-2"
+        :for="formItem.name"
+        :class="{ 'opacity-0': !formItem.label }"
+      >
         {{ formItem.label }}
       </label>
       <ElIcon
@@ -26,7 +33,7 @@
       :class="{ 'el-form-item is-error !m-0': fieldHasErrors(formItem.key) }"
       @blur="validation.$touch()"
     >
-      <!-- Render options for select, radio, and checkbox components -->
+      <!-- Render options for select, radioGroup, and checkboxGroup components -->
       <template v-if="hasOptions(formItem.type)">
         <component
           :is="getOptionComponent(formItem.type)"
@@ -35,6 +42,9 @@
           :value="option.id"
           :label="option.label"
         />
+      </template>
+      <template v-else-if="formItem.selectionType === 'single'">
+        {{ formItem.selectionLabel }}
       </template>
     </component>
 
@@ -114,8 +124,10 @@ const getComponentType = (type: string): string => {
   const componentMap: Record<string, string> = {
     input: "ElInput",
     textarea: "ElInput",
-    checkbox: "ElCheckboxGroup",
-    radio: "ElRadioGroup",
+    checkbox: "ElCheckbox",
+    checkboxGroup: "ElCheckboxGroup",
+    radio: "ElRadio",
+    radioGroup: "ElRadioGroup",
     date: "ElDatePicker",
   }
 
@@ -124,15 +136,15 @@ const getComponentType = (type: string): string => {
 
 // Checks if a form type has options (checkbox, radio, select)
 const hasOptions = (type: string): boolean => {
-  return ["checkbox", "radio", "select"].includes(type)
+  return ["select", "checkboxGroup", "radioGroup"].includes(type)
 }
 
 // Returns the appropriate option component based on the field type
 const getOptionComponent = (type: string): string => {
   const optionMap: Record<string, string> = {
-    checkbox: "ElCheckbox",
-    radio: "ElRadio",
     select: "ElOption",
+    checkboxGroup: "ElCheckbox",
+    radioGroup: "ElRadio",
   }
 
   return optionMap[type] || ""
@@ -147,6 +159,7 @@ const isComplexType = (type: string): boolean => {
 const getComponentProps = (formItem: FormItem): Record<string, any> => {
   const commonProps = {
     placeholder: formItem.placeholder,
+    key: formItem.key,
   }
 
   const typeSpecificProps: Record<string, Record<string, any>> = {
@@ -158,6 +171,12 @@ const getComponentProps = (formItem: FormItem): Record<string, any> => {
       rows: formItem.rows || 3,
     },
     date: {},
+    checkbox: {
+      label: formItem.selectionLabel,
+    },
+    radio: {
+      label: formItem.selectionLabel,
+    },
   }
 
   return { ...commonProps, ...(typeSpecificProps[formItem.type] || {}) }

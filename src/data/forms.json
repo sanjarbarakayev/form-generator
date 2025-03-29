@@ -56,23 +56,32 @@
       "name": "form3",
       "items": [
         {
-          "id": 3,
+          "id": 31,
           "type": "checkbox",
           "name": "terms",
           "key": "terms",
-          "label": "Terms and Conditions",
+          "selectionLabel": "Do you agree to the terms and conditions?",
+          "selectionType": "single"
+        },
+        {
+          "id": 32,
+          "type": "checkboxGroup",
+          "name": "cars",
+          "key": "cars",
+          "label": "Cars",
+          "selectionType": "multiple",
           "options": [
             {
               "id": 1,
-              "label": "Terms and Conditions"
+              "label": "Lamborghini"
             },
             {
               "id": 2,
-              "label": "Privacy Policy"
+              "label": "Ferrari"
             },
             {
               "id": 3,
-              "label": "Cookies"
+              "label": "Lexus"
             }
           ]
         }
@@ -85,10 +94,11 @@
       "items": [
         {
           "id": 4,
-          "type": "radio",
+          "type": "radioGroup",
           "name": "gender",
           "key": "gender",
           "label": "Gender",
+          "selectionType": "multiple",
           "options": [
             {
               "id": 1,
@@ -97,10 +107,6 @@
             {
               "id": 2,
               "label": "Female"
-            },
-            {
-              "id": 3,
-              "label": "Other"
             }
           ]
         }

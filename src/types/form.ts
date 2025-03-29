@@ -3,11 +3,15 @@ import type { validatorMap } from "@/utils/validation"
 export type FormItemType =
   | "input"
   | "checkbox"
+  | "checkboxGroup"
   | "radio"
+  | "radioGroup"
   | "date"
   | "select"
   | "file"
   | "textarea"
+
+export type SelectType = "single" | "multiple"
 
 interface Option {
   id: number | string
@@ -30,7 +34,8 @@ export interface FormItem {
   layout?: "row" | "column"
   options?: Option[]
   rows?: number
-  inline?: boolean
+  selectionType?: SelectType
+  selectionLabel?: string
   variant?: string
   editControllerAvailable?: boolean
   validators?: {
