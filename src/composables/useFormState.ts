@@ -17,7 +17,7 @@ export const useFormState = (initialForms: FormGroup[]) => {
   const initializeFormValues = () => {
     return forms.reduce((values, form) => {
       form.items.forEach((item) => {
-        values[item.key] = null // Default to null for better form handling
+        values[item.key] = undefined
       })
       return values
     }, {} as FormValues)
